@@ -1,6 +1,5 @@
 /**
  * Create a Node app that will fetch the data from below API and save in the table in MongoDB Or MySQL. Export this data using API end point from Node app with pagination and sorting
- sumit.munot@neosofttech.com
 API - https://jsonplaceholder.typicode.com/posts
  */
 
