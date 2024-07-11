@@ -22,7 +22,7 @@ const seedDatabase = async () => {
   const posts = await fetch(`https://jsonplaceholder.typicode.com/posts`).then(
     (res) => res.json()
   );
-  posts.map(async (post) => await Post.create());
+  posts.map(async (post) => await Post.create(post));
 
   await sequelize.close();
 };
