@@ -1,30 +1,21 @@
-// seed.js
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-const { Sequelize, DataTypes } = require("sequelize");
-const { config } = require("dotenv");
-
-config();
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not set");
-}
-
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialectOptions: {
-    ssl: {
-      require: true,
-    },
-  },
-});
-
-const Post = require("../models/post")(sequelize, DataTypes);
-
-const seedDatabase = async () => {
+async function seed() {
   const posts = await fetch(`https://jsonplaceholder.typicode.com/posts`).then(
     (res) => res.json()
   );
-  posts.map(async (post) => await Post.create(post));
 
-  await sequelize.close();
-};
+  posts.map(async (post) => await prisma.post.create({data: post}))
+}
 
-seedDatabase();
+seed()
+  .then(async () => {
+    console.log("first")
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
